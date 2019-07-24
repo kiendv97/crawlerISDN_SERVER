@@ -2,9 +2,9 @@ var express = require('express');
 var router = express.Router();
 var ISDNModel = require('../model/ISDN');
 /* GET home page. */
-router.get(`/setinfo`, async function (req, res, next) {
+router.post(`/setinfo`, async function (req, res, next) {
   try {
-    const paramsQuery = Object.assign({}, req.query);
+    const paramsQuery = Object.assign({}, req.params);
     const ISDN = await ISDNModel.updateOne({keyword: paramsQuery.keyword},{$set: {status: 1, updatedAt: Date.now(), content: paramsQuery.content}});
     if (ISDN) {
       res.status(200).send({

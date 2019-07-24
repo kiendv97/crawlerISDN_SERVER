@@ -6,7 +6,7 @@ const ISDN = new Schema({
         type: String,
     },
     content: {
-        type: String,
+        type: Object,
     },
     keyword: {
         type: Number,
