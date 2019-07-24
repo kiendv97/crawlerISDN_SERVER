@@ -5,16 +5,7 @@ var ISDNModel = require('../model/ISDN');
 router.get(`/setinfo`, async function (req, res, next) {
   try {
     const paramsQuery = Object.assign({}, req.query);
-
-    const newISDN = {
-      telco: paramsQuery.telco || 'mobi',
-      keyword: paramsQuery.keyword || 0,
-      user: paramsQuery.user || 'admin',
-      content: paramsQuery.content || '',
-      status: 1,
-      updatedAt: Date.now()
-    }
-    const ISDN = await ISDNModel.create(newISDN);
+    const ISDN = await ISDNModel.updateOne({keyword: paramsQuery.keyword},{$set: {status: 1, updatedAt: Date.now(), content: paramsQuery.content}});
     if (ISDN) {
       res.status(200).send({
         status: 1,
@@ -31,13 +22,16 @@ router.get(`/setinfo`, async function (req, res, next) {
 router.get('/check', async (req, res, next) => {
   const paramsQuery = Object.assign({}, req.query);
   try {
+    const newISDN = {
+      telco: paramsQuery.telco || 'mobi',
+      keyword: paramsQuery.keyword || 0,
+      user: paramsQuery.user || 'admin',
+      content: paramsQuery.content || '',
+      status: 0
+      
+    }
 
-    // const status = await ISDNModel.aggregate([
-    //   { $match: {keyword: paramsQuery.keyword}},
-    //   {$group: {status: '$status'}}
-    // ]);
-
-    const response = await ISDNModel.create(paramsQuery);
+    const response = await ISDNModel.create(newISDN);
 
     res.status(200).send({
       status: 1,
@@ -51,6 +45,7 @@ router.get('/check', async (req, res, next) => {
   }
 });
 router.get('/getdetails', async (req, res, next) => {
+  const paramsQuery = Object.assign({}, req.query);
   try {
     const response = await ISDNModel.findOne({ $and: [{ keyword: paramsQuery.keyword, telco: paramsQuery.telco }] });
 
@@ -68,8 +63,8 @@ router.get('/getdetails', async (req, res, next) => {
 router.get('/getkeyword', async (req, res, next) => {
   try {
     const listKeyword = await ISDNModel.aggregate([
-      { $match: {status: 0}},
-      {groupBy: {keyword: '$keyword'}}
+      { $match: {status: {$eq: 0}}},
+      {$group: {_id: '$keyword'}}
     ]);
     res.status(200).send({
       status: 1,
