@@ -5,13 +5,20 @@ var ISDNModel = require('../model/ISDN');
 router.post(`/setinfo`, async function (req, res, next) {
   try {
     const paramsQuery = Object.assign({}, req.body);
-    const ISDN = await ISDNModel.updateOne({ keyword: paramsQuery.keyword }, { $set: { user_res: paramsQuery.user_res, status: 1, reponsedAt: Date.now(), updatedAt: Date.now(), content: paramsQuery.content } });
-    if (ISDN) {
+    console.log(paramsQuery.keyword);
+    
+    const ISDN = await ISDNModel.updateOne({ keyword: paramsQuery.keyword }, { $set: {  status: paramsQuery.status, reponsedAt: Date.now(),  content: paramsQuery.content } });
+    if (ISDN !== null) {
       console.log(ISDN);
 
       res.status(200).send({
         status: 1,
         result: ISDN
+      })
+    } else {
+      res.status(200).send({
+        status: 0,
+        result: 'not existed'
       })
     }
   } catch (error) {
@@ -28,12 +35,11 @@ router.get('/check', async (req, res, next) => {
     const newISDN = {
       telco: paramsQuery.telco || 'mobi',
       keyword: paramsQuery.keyword || 0,
-      user_req: paramsQuery.user_req || 'admin',
-      status: 0,
-      updatedAt: Date.now()
+      user: paramsQuery.user || 'admin',
+      status: 0, //pending
 
     }
-    const response = await ISDNModel.findOneAndUpdate({ keyword: newISDN.keyword }, { $set: { newISDN } });
+    const response = await ISDNModel.findOneAndUpdate({ keyword: newISDN.keyword }, { $set: { status: 0, updatedAt: Date.now() } });
     console.log(response);
     if (response === null) {
       const result = await ISDNModel.create(newISDN);
@@ -65,13 +71,15 @@ router.get('/check', async (req, res, next) => {
   }
 });
 router.get('/getdetails', async (req, res, next) => {
-  const paramsQuery = Object.assign({}, req.query);
+  const paramsQuery = Object.assign({}, req.query, {status: 1});
+  console.log(paramsQuery);
+  
   try {
     const response = await ISDNModel.findOne({ $and: [paramsQuery] }, null, { sort: { updatedAt: -1 } });
     if (response) {
       res.status(200).send({
         status: 1,
-        result: response.data
+        result: response
       })
     } else {
       res.status(203).send({

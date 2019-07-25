@@ -2,11 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ISDN = new Schema({
-    user_req: {
+    user: {
         type: String,
-    },
-    user_res: {
-        type: String
     },
     content: {
         type: Object,
@@ -17,7 +14,7 @@ const ISDN = new Schema({
     },
     status: {
         type: Number,
-        enum: [0,1,2],
+        enum: [0, 1, 2],
         default: 0 // 0 pending , 1 success, 2 error || null
     },
     telco: {
@@ -26,19 +23,18 @@ const ISDN = new Schema({
     createdAt: {
         type: Number,
         default: Date.now(),
-        required:true
+        required: true
 
     },
     updatedAt: {
         type: Number,
         default: Date.now(),
-        required:true
+        required: true
 
     },
     reponsedAt: {
-        type: Number,
-        default: Date.now()
-        
+        type: Number
+
     }
 });
 
