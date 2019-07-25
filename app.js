@@ -24,7 +24,7 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 app.use((req,res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', 'khoso.topsim.vn');
  // res.setHeader('Access-Control-Allow-Credentials', true);
 
 })
