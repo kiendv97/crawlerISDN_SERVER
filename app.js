@@ -16,18 +16,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use((req,res,next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'khoso.topsim.vn');
+  next();
+ // res.setHeader('Access-Control-Allow-Credentials', true);
 
+})
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
-app.use((req,res) => {
-  res.setHeader('Access-Control-Allow-Origin', 'khoso.topsim.vn');
- // res.setHeader('Access-Control-Allow-Credentials', true);
 
-})
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
