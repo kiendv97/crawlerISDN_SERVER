@@ -2,8 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ISDN = new Schema({
-    user: {
+    user_req: {
         type: String,
+    },
+    user_res: {
+        type: String
     },
     content: {
         type: Object,
@@ -31,6 +34,11 @@ const ISDN = new Schema({
         default: Date.now(),
         required:true
 
+    },
+    reponsedAt: {
+        type: Number,
+        default: Date.now()
+        
     }
 });
 

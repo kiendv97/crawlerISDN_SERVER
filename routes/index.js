@@ -5,10 +5,10 @@ var ISDNModel = require('../model/ISDN');
 router.post(`/setinfo`, async function (req, res, next) {
   try {
     const paramsQuery = Object.assign({}, req.body);
-    const ISDN = await ISDNModel.updateOne({keyword: paramsQuery.keyword},{$set: {status: 1, updatedAt: Date.now(), content: paramsQuery.content}});
+    const ISDN = await ISDNModel.updateOne({ keyword: paramsQuery.keyword }, { $set: { user_res: paramsQuery.user_res, status: 1, reponsedAt: Date.now(), updatedAt: Date.now(), content: paramsQuery.content } });
     if (ISDN) {
       console.log(ISDN);
-      
+
       res.status(200).send({
         status: 1,
         result: ISDN
@@ -27,18 +27,35 @@ router.get('/check', async (req, res, next) => {
     const newISDN = {
       telco: paramsQuery.telco || 'mobi',
       keyword: paramsQuery.keyword || 0,
-      user: paramsQuery.user || 'admin',
-      content: paramsQuery.content || '',
-      status: 0
-      
+      user_req: paramsQuery.user_req || 'admin',
+      status: 0,
+      updatedAt: Date.now()
+
     }
+    const response = await ISDNModel.findOneAndUpdate({ keyword: newISDN.keyword }, { $set: { newISDN } });
+    console.log(response);
+    if (response === null) {
+      const result = await ISDNModel.create(newISDN);
+      console.log('create');
+      
+      res.status(200).send({
+        status: 1,
+        result: 'create'
+      })
 
-    const response = await ISDNModel.create(newISDN);
-
-    res.status(200).send({
+    } else {
+      console.log('update');
+      
+      res.status(200).send({
       status: 1,
-      result: response
+      result: 'update'
     })
+    }
+    
+
+
+
+
   } catch (error) {
     res.status(500).send({
       status: 0,
@@ -49,12 +66,19 @@ router.get('/check', async (req, res, next) => {
 router.get('/getdetails', async (req, res, next) => {
   const paramsQuery = Object.assign({}, req.query);
   try {
-    const response = await ISDNModel.findOne({ $and: [{ keyword: paramsQuery.keyword, telco: paramsQuery.telco }] });
+    const response = await ISDNModel.findOne({ $and: [paramsQuery] }, null, { sort: { updatedAt: -1 } });
+    if (response) {
+      res.status(200).send({
+        status: 1,
+        result: response.data
+      })
+    } else {
+      res.status(203).send({
+        status: 0,
+        result: ''
+      })
+    }
 
-    res.status(200).send({
-      status: 1,
-      result: response
-    })
   } catch (error) {
     res.status(500).send({
       status: 0,
@@ -65,8 +89,8 @@ router.get('/getdetails', async (req, res, next) => {
 router.get('/getkeyword', async (req, res, next) => {
   try {
     const listKeyword = await ISDNModel.aggregate([
-      { $match: {status: {$eq: 0}}},
-      {$group: {_id: '$keyword'}}
+      { $match: { status: { $eq: 0 } } },
+      { $group: { _id: '$keyword' } }
     ]);
     res.status(200).send({
       status: 1,
@@ -78,6 +102,6 @@ router.get('/getkeyword', async (req, res, next) => {
       result: error
     })
   }
-   
+
 })
 module.exports = router;

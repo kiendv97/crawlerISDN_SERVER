@@ -23,7 +23,11 @@ app.use('/', indexRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
+app.use((req,res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+ // res.setHeader('Access-Control-Allow-Credentials', true);
 
+})
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
