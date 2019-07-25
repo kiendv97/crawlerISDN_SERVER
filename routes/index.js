@@ -7,7 +7,7 @@ router.post(`/setinfo`, async function (req, res, next) {
     const paramsQuery = Object.assign({}, req.body);
     console.log(paramsQuery.keyword);
     
-    const ISDN = await ISDNModel.updateOne({ keyword: paramsQuery.keyword }, { $set: {  status: paramsQuery.status, reponsedAt: Date.now(),  content: paramsQuery.content } });
+    const ISDN = await ISDNModel.updateOne({ keyword: paramsQuery.keyword }, { $set: {  status: 1, reponsedAt: Date.now(),  content: paramsQuery.content } });
     if (ISDN !== null) {
       console.log(ISDN);
 
