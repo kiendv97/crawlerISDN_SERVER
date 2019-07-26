@@ -8,7 +8,7 @@ const convert_content = require('../utils/Convert_content');
 router.post(`/setinfo`, async function (req, res, next) {
   try {
     const paramsQuery = Object.assign({}, req.body);
-    console.log(paramsQuery.keyword);
+    console.log(req.body  );
 
     const ISDN = await ISDNModel.findOneAndUpdate({ keyword: paramsQuery.keyword }, { $set: { status: 1, reponsedAt: Date.now(), content: paramsQuery.content } });
     if (ISDN !== null) {
