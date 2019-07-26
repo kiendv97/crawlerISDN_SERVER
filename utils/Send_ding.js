@@ -8,7 +8,7 @@ async function sendToDingtalk(data) {
         }
       })
       .then(responses => {
-        if (responses.data.status) {
+        if (responses) {
           console.log('sendToDingTalk ok');
         }
       });

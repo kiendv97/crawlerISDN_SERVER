@@ -26,6 +26,8 @@ router.post(`/setinfo`, async function (req, res, next) {
       })
     }
   } catch (error) {
+    console.log(error);
+    
     res.status(500).send({
       status: 0,
       result: error
