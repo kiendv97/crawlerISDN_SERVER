@@ -124,7 +124,8 @@ router.get('/getkeyword', async (req, res, next) => {
 
     const listKeyword = await ISDNModel.aggregate([
       { $match: { status: { $eq: 0 } } },
-      { $group: { _id: '$keyword' } }
+      { $group: { _id: '$keyword' } }, 
+      {$limit: 1}
     ]);
     res.status(200).send({
       status: 1,

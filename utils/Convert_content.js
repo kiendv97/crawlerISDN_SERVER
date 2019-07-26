@@ -2,7 +2,7 @@ const S = require('string');
 const moment = require('moment')
 
 async function convert(newMobi) {
-
+    
     var infoString = 'Số TB: ' + newMobi['Số TB'].toString() + ' Công ty: ' + newMobi['Công ty'].toString() + ' Mã cửa hàng: ' + newMobi['Mã cửa hàng'].toString()
     var myDate = newMobi['Ngày thay đổi'].toString();
     myDate = myDate.split("-");
