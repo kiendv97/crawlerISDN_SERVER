@@ -1,18 +1,7 @@
 const S = require('string');
 const moment = require('moment')
-const newMobi = {
-    "Số TB": "933253453",
-    "Loại TB": "Số MobiFone",
-    "Trạng thái": "Số ngưng sử dụng",
-    "Ngày thay đổi": "25-09-2017",
-    "Mã cửa hàng": "2BTH00184",
-    "Ngày tạo số": "25-05-2007",
-    "Loại số": "Tu do",
-    "Công ty": "8",
-    "Số cấm tác động": "Không",
-    "Loại cam kết": "CK150_40\t[Lịch sử]"
-}
-async function convert() {
+
+async function convert(newMobi) {
 
     var infoString = 'Số TB: ' + newMobi['Số TB'].toString() + ' Công ty: ' + newMobi['Công ty'].toString() + ' Mã cửa hàng: ' + newMobi['Mã cửa hàng'].toString()
     var myDate = newMobi['Ngày thay đổi'].toString();
@@ -22,20 +11,7 @@ async function convert() {
     var checkChangeMonth = new Date(new Date().getTime() - new Date(newDate).getTime()).getMonth()
     var checkChangeDate = new Date(new Date().getTime() - new Date(newDate).getTime()).getUTCFullYear() - 1
     var finalCheck = checkChangeDate + checkChangeMonth * 30 + checkChangeYear * 365
-    // if (newMobi['Trạng thái'].toString().search('Số đang sử dụng') == 0 || newMobi['Số cấm tác động'].toString().indexOf('Không') == 0) {
-    //     infoString = '\nSố không còn'
-
-    // } else if ((newMobi['Loại TB'].toString().indexOf('Số MobiCard') == 0 ||newMobi['Loại TB'].toString().indexOf('Số MobiCard') == 0  ||newMobi['Loại TB'].toString().indexOf('Số MobiCard') == 0) && newMobi['Loại số'].toString().indexOf('Tu do') == 0) {
-    //     infoString += '\nSố còn '
-    //     if (finalCheck > 5)  {
-    //         infoString += 'chưa đấu được'
-    //     }
-    //     if (newMobi['Loại cam kết'].toString().indexOf('KHONG_CK') == 0) {
-    //         infoString += 'trả sau thường'
-    //     } else {
-    //         infoString += newMobi['Loại cam kết'].toString().split('\t')[0];
-    //     }
-    // }
+   
 
     if (newMobi['Trạng thái'].toString().search('Số đang sử dụng') == 0 || newMobi['Số cấm tác động'].toString().indexOf('Không') == -1) {
         infoString += '\nSố không còn'
