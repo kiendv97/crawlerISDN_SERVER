@@ -20,7 +20,7 @@ async function convert(newMobi) {
         if ((newMobi['Loại TB'].toString().indexOf('Số MobiCard') == 0 || newMobi['Loại TB'].toString().indexOf('Số MobiFone') == 0) && newMobi['Loại cam kết'].toString().indexOf('KHONG_CK') == 0) {
             
            const dau =  (finalCheck <= 5)? 'chưa đấu được': '';
-           infoString += '\nSố còn, trả sau thường ' + dau
+           infoString += '\nSố còn, trả sau thường ' + dau + 'gói từ 69k'
         } else if (newMobi['Mã cửa hàng'].toString().indexOf('2HCMCKCN') == 0) {
             const dau =  (finalCheck <= 5)? 'chưa đấu được': '';
             infoString += '\nSố còn, trả sau ' + newMobi['Loại cam kết'].toString().split('_')[0] + dau
