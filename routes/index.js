@@ -139,4 +139,24 @@ router.get('/getkeyword', async (req, res, next) => {
   }
 
 })
+router.post('/exist-keyword', async (req,res,next) => {
+  try {
+    const listPhone = req.body.listPhone
+    if(!listPhone) throw 'Phai truyen vao list so'
+
+    console.log('[listPhone] ',listPhone);
+    
+    const listKeyword = await ISDNModel.find({keyword: {$in: listPhone}})
+    res.status(200).send({
+      status: 1,
+      result: listKeyword
+    })
+
+  } catch (error) {
+    res.status(500).send({
+      status: 0,
+      result: error
+    })
+  }
+})
 module.exports = router;
